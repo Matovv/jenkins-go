@@ -17,19 +17,6 @@ pipeline {
     }
     stages {
         stage('Build') {
-            script {
-                    // Run 'go test'
-                    def testExitCode = sh(script: 'go test ./...', returnStatus: true)
-
-                    // Check the exit code of 'go test'
-                    if (testExitCode != 0) {
-                        error "Tests failed! Exiting build."
-                    }
-
-                    // Continue with other build steps if tests pass
-                    echo "Tests passed!"
-            }
-                /*
             steps {
                 echo "Building.."
                 sh '''
@@ -37,7 +24,7 @@ pipeline {
                 go build -o myapp .
                 '''
             }
-            */
+            
         }
         stage('Test') {
             steps {
