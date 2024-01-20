@@ -3,6 +3,10 @@ pipeline {
     triggers {
         pollSCM '* * * * *'
     }
+    tools {
+        // Specify the Go installation by name
+        go 'Go'
+    }
     stages {
         stage('Build') {
             steps {
