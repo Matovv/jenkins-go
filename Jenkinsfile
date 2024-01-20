@@ -17,21 +17,33 @@ pipeline {
     }
     stages {
         stage('Build') {
+            script {
+                    // Run 'go test'
+                    def testExitCode = sh(script: 'go test ./...', returnStatus: true)
+
+                    // Check the exit code of 'go test'
+                    if (testExitCode != 0) {
+                        error "Tests failed! Exiting build."
+                    }
+
+                    // Continue with other build steps if tests pass
+                    echo "Tests passed!"
+            }
+                /*
             steps {
                 echo "Building.."
                 sh '''
-                go run .
-                pip install -r requirements.txt
+                go test
+                go build -o myapp .
                 '''
             }
+            */
         }
         stage('Test') {
             steps {
                 echo "Testing.."
                 sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Brad
+                ./myapp
                 '''
             }
         }
