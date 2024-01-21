@@ -7,31 +7,36 @@ pipeline {
         }
     }
     */
+    pipeline {
     agent any
     triggers {
         pollSCM '* * * * *'
     }
     tools {
         // Specify the Go installation by name
-        go 'go'
+        go 'Go'
     }
     stages {
-        stage('Build') {
-            steps {
-                echo "Building.."
-                sh '''
-                go test
-                go build -o myapp .
-                '''
-            }
-            
-        }
         stage('Test') {
             steps {
-                echo "Testing.."
-                sh '''
-                ./myapp
-                '''
+                script {
+                    // Use catchError to catch errors during 'go test'
+                    catchError(buildResult: 'FAILURE', message: 'Unit tests failed!') {
+                        echo "Testing.."
+                        sh 'go test ./...' || error('Tests failed!')
+                    }
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    // Use catchError to catch errors during 'go test'
+                    catchError(buildResult: 'FAILURE', message: 'Build failed!') {
+                        echo "Building.."
+                        sh 'go build -o myapp .' || error('Build failed!')
+                    }
+                }
             }
         }
         stage('Deliver') {

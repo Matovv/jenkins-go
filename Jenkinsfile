@@ -10,23 +10,19 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                script {
-                    // Use catchError to catch errors during 'go test'
-                    catchError(buildResult: 'FAILURE') {
-                        echo "Testing.."
-                        sh 'go test ./...'
-                    }
+                script {             
+                    echo "Testing.."
+                    sh 'go test ./...' || error('Tests failed!')
+                
                 }
             }
         }
         stage('Build') {
             steps {
                 script {
-                    // Use catchError to catch errors during 'go test'
-                    catchError(buildResult: 'FAILURE') {
-                        echo "Building.."
-                        sh 'go build -o myapp .'
-                    }
+                    echo "Building.."
+                    sh 'go build -o myapp .' || error('Build failed!')
+                    
                 }
             }
         }
