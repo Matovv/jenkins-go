@@ -8,24 +8,26 @@ pipeline {
         go 'Go'
     }
     stages {
+        stage('Test') {
+            steps {
+                script {
+                    // Use catchError to catch errors during 'go test'
+                    catchError(buildResult: 'UNIT TEST FAILED!') {
+                        echo "Testing.."
+                        sh 'go test ./...'
+                    }
+                }
+            }
+        }
         stage('Build') {
             steps {
                 script {
                     // Use catchError to catch errors during 'go test'
-                    catchError(buildResult: 'UNSTABLE') {
+                    catchError(buildResult: 'BUILD FAILED!') {
                         echo "Building.."
                         sh 'go test ./...'
-                        sh 'go build -o myapp .'
                     }
                 }
-        }
-    }
-        stage('Test') {
-            steps {
-                echo "Testing.."
-                sh '''
-                ./myapp
-                '''
             }
         }
         stage('Deliver') {
