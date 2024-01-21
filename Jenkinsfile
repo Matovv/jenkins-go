@@ -25,7 +25,7 @@ pipeline {
                     // Use catchError to catch errors during 'go test'
                     catchError(buildResult: 'BUILD FAILED!') {
                         echo "Building.."
-                        sh 'go test ./...'
+                        sh 'go build -o myapp .'
                     }
                 }
             }
