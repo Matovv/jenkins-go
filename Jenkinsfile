@@ -21,19 +21,17 @@ pipeline {
                     
                    
                     // Check the coverage percentage
-                    def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).toString().trim()
+                    def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
                     echo "Raw Coverage: ${coveragePercentageRaw}"
                     
-                    def coveragePercentage = sh(script: 'echo "${coveragePercentageRaw}" | tr -d "%"', returnStatus: true).trim().toFloat()
+                    // Remove the percentage sign and convert to a float
+                    def coveragePercentage = coveragePercentageRaw.replaceAll('%', '').toFloat()
                     echo "Coverage: ${coveragePercentage}%"
-
-                    // Convert the coverage percentage to a float for comparison
-                    def coverageFloat = coveragePercentage.toFloat()
                     
                     // Fail the build if coverage is below 90%
-                    if (coverageFloat < 90.0) {
+                    if (coveragePercentage < 90.0) {
                         error("Test coverage is below 90% (${coveragePercentage}%).")
-                    }  
+                    }
                 }
             }
         }
