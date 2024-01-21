@@ -19,10 +19,14 @@ pipeline {
                         error('Tests failed!')
                     }
                     
+                   
                     // Check the coverage percentage
-                    def coveragePercentage = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
-                    echo "Coverage: ${coveragePercentage}"
+                    def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
+                    echo "Raw Coverage: ${coveragePercentageRaw}"
                     
+                     def coveragePercentage = coveragePercentageRaw.replaceAll('%', '').toFloat()
+                    echo "Coverage: ${coveragePercentage}%"
+
                     // Convert the coverage percentage to a float for comparison
                     def coverageFloat = coveragePercentage.toFloat()
                     
