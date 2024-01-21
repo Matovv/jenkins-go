@@ -12,9 +12,8 @@ pipeline {
             steps {
                 script {
                     echo "Linting code..."
-                    sh 'go install github.com/mgechev/revive@latest'
                     // Replace 'golint' with the actual linter command you use
-                    def lintExitCode = sh(script: 'revive ./...', returnStatus: true)
+                    def lintExitCode = sh(script: 'staticcheck ./...', returnStatus: true)
                     if (lintExitCode != 0) {
                         error('Linting failed!')
                     }
