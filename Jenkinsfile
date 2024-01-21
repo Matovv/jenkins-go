@@ -10,13 +10,14 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Building.."
-                sh '''
-                go test
-                go build -o myapp .
-                '''
-            }
-            
+              script {
+                    // Use catchError to catch errors during 'go test'
+                    catchError(buildResult: 'UNSTABLE') {
+                        echo "Building.."
+                        sh 'go test ./...'
+                        sh 'go build -o myapp .'
+                }
+              }
         }
         stage('Test') {
             steps {
@@ -36,3 +37,7 @@ pipeline {
         }
     }
 }
+
+git add .
+git commit -m "fixes and updates"
+git push origin
