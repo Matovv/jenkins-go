@@ -10,15 +10,16 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-              script {
+                script {
                     // Use catchError to catch errors during 'go test'
                     catchError(buildResult: 'UNSTABLE') {
                         echo "Building.."
                         sh 'go test ./...'
                         sh 'go build -o myapp .'
+                    }
                 }
-              }
         }
+    }
         stage('Test') {
             steps {
                 echo "Testing.."
