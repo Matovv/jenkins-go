@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     echo "Linting code..."
-                    sh 'go get -u github.com/mgechev/revive'
+                    sh 'go install github.com/mgechev/revive@latest'
                     // Replace 'golint' with the actual linter command you use
                     def lintExitCode = sh(script: 'revive ./...', returnStatus: true)
                     if (lintExitCode != 0) {
@@ -23,11 +23,25 @@ pipeline {
         }
         stage('Test') {
             steps {
-                script {             
-                    def testExitCode = sh(script: 'go test ./...', returnStatus: true)
+                script {           
+                     echo "Running tests with coverage..."
+
+                     def testExitCode = sh(script: 'go test ./... -coverprofile=coverage.out', returnStatus: true)
                     if (testExitCode != 0) {
                         error('Tests failed!')
                     }
+                    
+                    // Check the coverage percentage
+                    def coveragePercentage = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
+                    echo "Coverage: ${coveragePercentage}%"
+                    
+                    // Convert the coverage percentage to a float for comparison
+                    def coverageFloat = coveragePercentage.toFloat()
+                    
+                    // Fail the build if coverage is below 90%
+                    if (coverageFloat < 90.0) {
+                        error("Test coverage is below 90% (${coveragePercentage}%).")
+                    }  
                 }
             }
         }
