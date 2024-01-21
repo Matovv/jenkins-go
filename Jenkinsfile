@@ -37,7 +37,3 @@ pipeline {
         }
     }
 }
-
-git add .
-git commit -m "fixes and updates"
-git push origin
