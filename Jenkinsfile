@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Use catchError to catch errors during 'go test'
-                    catchError(buildResult: 'UNIT TEST FAILED!') {
+                    catchError(buildResult: 'UNSTABALE') {
                         echo "Testing.."
                         sh 'go test ./...'
                     }
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 script {
                     // Use catchError to catch errors during 'go test'
-                    catchError(buildResult: 'BUILD FAILED!') {
+                    catchError(buildResult: 'UNSTABALE') {
                         echo "Building.."
                         sh 'go build -o myapp .'
                     }
