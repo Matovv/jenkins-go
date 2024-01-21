@@ -11,9 +11,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {             
-                    echo "Testing.."
-                    sh 'go test ./...' || error('Tests failed!')
-                
+                    def testExitCode = sh(script: 'go test ./...', returnStatus: true)
+                    if (testExitCode != 0) {
+                        error('Tests failed!')
+                    }
                 }
             }
         }
@@ -21,8 +22,10 @@ pipeline {
             steps {
                 script {
                     echo "Building.."
-                    sh 'go build -o myapp .' || error('Build failed!')
-                    
+                     def testExitCode = sh(script: 'go build -o myapp .', returnStatus: true)
+                    if (testExitCode != 0) {
+                        error('Build failed!')
+                    }
                 }
             }
         }
@@ -33,6 +36,19 @@ pipeline {
                 echo "doing delivery stuff.."
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            // Send email notification after build completes
+            emailext (
+                subject: "Build ${currentBuild.currentResult}",
+                body: "Build ${currentBuild.currentResult}: Job ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}\n\n${BUILD_URL}",
+                recipientProviders: [culprits(), requestor()],
+                attachLog: true,
+                compressLog: true,
+            )
         }
     }
 }
