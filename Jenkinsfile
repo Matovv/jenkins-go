@@ -8,6 +8,18 @@ pipeline {
         go 'Go'
     }
     stages {
+        stage('Lint') {
+            steps {
+                script {
+                    echo "Linting code..."
+                    // Replace 'golint' with the actual linter command you use
+                    def lintExitCode = sh(script: 'revive ./...', returnStatus: true)
+                    if (lintExitCode != 0) {
+                        error('Linting failed!')
+                    }
+                }
+            }
+        }
         stage('Test') {
             steps {
                 script {             

@@ -24,9 +24,9 @@ func TestFunc1(t *testing.T) {
 func TestFunc2(t *testing.T) {
 	// Test cases for Func2
 	testCases := []struct {
-		a, b, c    int
-		s          string
-		expected   int
+		a, b, c  int
+		s        string
+		expected int
 	}{
 		{2, 3, 4, "lol", 24},
 		{1, 2, 3, "bol", 6},
@@ -37,8 +37,7 @@ func TestFunc2(t *testing.T) {
 	for _, tc := range testCases {
 		result := Func2(tc.a, tc.b, tc.c, tc.s)
 		if result != tc.expected {
-			t.Errorf("Func2(%d, %d, %d, %q) = %d; expected %d", tc.a, tc.b, tc.c, tc.s, result, tc.expected)
+			t.Errorf("Func2(%d, %d, %d, %q) = %d; expected %d", tc.a, tc.b, tc.c, tc.s, result, tc.expected) // ldfsfdsfsdfdsfdsfsdfsf
 		}
 	}
 }
-
