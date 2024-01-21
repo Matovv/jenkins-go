@@ -21,7 +21,7 @@ pipeline {
                     
                    
                     // Check the coverage percentage
-                    def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
+                    def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).toString().trim()
                     echo "Raw Coverage: ${coveragePercentageRaw}"
                     
                     def coveragePercentage = sh(script: 'echo "${coveragePercentageRaw}" | tr -d "%"', returnStatus: true).trim().toFloat()
