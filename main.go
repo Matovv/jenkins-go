@@ -1,13 +1,13 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println("Func1-1 :", Func1(5, 2))
-	fmt.Println("Func1-2 :", Func1(12, 10))
-	fmt.Println("Func2-1 :", Func2(5, 2, 5, "yourass"))
-	fmt.Println("Func2-1 :", Func2(5, 2, 5, "bol"))
-	fmt.Println("Func2-1 :", Func2(5, 2, 5, "tvoyamama"))
+	/*
+		fmt.Println("Func1-1 :", Func1(5, 2))
+		fmt.Println("Func1-2 :", Func1(12, 10))
+		fmt.Println("Func2-1 :", Func2(5, 2, 5, "yourass"))
+		fmt.Println("Func2-1 :", Func2(5, 2, 5, "bol"))
+		fmt.Println("Func2-1 :", Func2(5, 2, 5, "tvoyamama"))
+	*/
 
 }
 
