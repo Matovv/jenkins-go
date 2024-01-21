@@ -24,7 +24,7 @@ pipeline {
                     def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
                     echo "Raw Coverage: ${coveragePercentageRaw}"
                     
-                    def coveragePercentage = (coveragePercentageRaw.replaceAll('%', '') as Double) as Float
+                    def coveragePercentage = (coveragePercentageRaw.replaceAll('%', '').toBigDecimal()) as Float
                     echo "Coverage: ${coveragePercentage}%"
 
                     // Convert the coverage percentage to a float for comparison
