@@ -12,6 +12,7 @@ pipeline {
             steps {
                 script {
                     echo "Linting code..."
+                    sh 'go get -u github.com/mgechev/revive'
                     // Replace 'golint' with the actual linter command you use
                     def lintExitCode = sh(script: 'revive ./...', returnStatus: true)
                     if (lintExitCode != 0) {
