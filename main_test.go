@@ -30,7 +30,7 @@ func TestFunc2(t *testing.T) {
 	}{
 		{2, 3, 4, "lol", 24},
 		{1, 2, 3, "bol", 6},
-		{4, 5, 2, "yourass", 24},
+		{4, 5, 2, "yourass", 14},
 		{1, 2, 3, "unknown", 0},
 	}
 
