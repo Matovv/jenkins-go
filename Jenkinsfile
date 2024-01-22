@@ -13,21 +13,16 @@ pipeline {
             steps {
                 script {           
                      echo "Running tests with coverage..."
-
-                     def testExitCode = sh(script: 'go test ./... -coverprofile=coverage.out', returnStatus: true)
+                    def testExitCode = sh(script: 'go test ./... -coverprofile=coverage.out', returnStatus: true)
                     if (testExitCode != 0) {
                         error('Tests failed!')
                     }
-                    
-                   
                     // Check the coverage percentage
                     def coveragePercentageRaw = sh(script: 'go tool cover -func=coverage.out | grep total | awk \'{print $3}\'', returnStdout: true).trim()
                     echo "Raw Coverage: ${coveragePercentageRaw}"
-                    
                     // Remove the percentage sign and convert to a float
                     def coveragePercentage = coveragePercentageRaw.replaceAll('%', '').toFloat()
                     echo "Coverage: ${coveragePercentage}%"
-                    
                     // Fail the build if coverage is below 90%
                     if (coveragePercentage < 90.0) {
                         error("Test coverage is below 90% (${coveragePercentage}%).")
